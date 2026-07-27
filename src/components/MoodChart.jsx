@@ -40,21 +40,18 @@ export default function MoodChart({ entries }) {
   const data = buildChartData(entries);
 
   return (
-    <section
-      className="rounded-2xl p-4 mb-4"
-      style={{ background: 'var(--tg-secondary-bg-color)' }}
-    >
-      <h2 className="text-sm font-medium mb-3 opacity-70">Tren mood 7 hari terakhir</h2>
+    <section className="rounded-3xl p-4 mb-4 shadow-soft bg-surface border border-border">
+      <h2 className="font-heading text-sm text-ink mb-3">Tren mood 7 hari terakhir</h2>
       <ResponsiveContainer width="100%" height={180}>
         <LineChart data={data} margin={{ top: 12, right: 12, left: -20, bottom: 0 }}>
           <CartesianGrid strokeDasharray="3 3" opacity={0.15} vertical={false} />
-          <XAxis dataKey="label" tick={{ fontSize: 10, fill: 'var(--tg-hint-color)' }} axisLine={false} tickLine={false} />
+          <XAxis dataKey="label" tick={{ fontSize: 10, fill: 'var(--color-muted)' }} axisLine={false} tickLine={false} />
           <YAxis domain={[0, 6]} hide />
           <Tooltip content={<ChartTooltip />} />
           <Line
             type="monotone"
             dataKey="score"
-            stroke="#A7C4E5"
+            stroke="var(--color-primary)"
             strokeWidth={2}
             connectNulls
             dot={<ChartDot />}

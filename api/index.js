@@ -5,10 +5,11 @@ const {
   getOrCreateUser,
   getEntriesForMonth,
   getRecentEntries,
-  getAllEntryDatesDesc,
+  getAllEntries,
   upsertMoodEntry,
 } = require('./_lib/db');
-const { computeStreak, computeMostFrequent } = require('./_lib/stats');
+const { computeStreak, computeLongestStreak, computeMostFrequent } = require('./_lib/stats');
+const { computeGamification } = require('./_lib/gamification');
 const { handleBotWebhook } = require('./_lib/bot');
 
 const app = express();
@@ -40,7 +41,20 @@ async function requireTelegramAuth(req, res, next) {
   }
 }
 
-app.get('/api/health', (_req, res) => res.json({ ok: true }));
+// No auth on purpose — only reports whether each env var is *present*,
+// never its value, so it's safe to hit from a plain browser to sanity-check
+// a deployment (e.g. https://your-app.vercel.app/api/health).
+app.get('/api/health', (_req, res) =>
+  res.json({
+    ok: true,
+    env: {
+      SUPABASE_URL: Boolean(process.env.SUPABASE_URL),
+      SUPABASE_SERVICE_ROLE_KEY: Boolean(process.env.SUPABASE_SERVICE_ROLE_KEY),
+      TELEGRAM_BOT_TOKEN: Boolean(process.env.TELEGRAM_BOT_TOKEN),
+      WEBAPP_URL: Boolean(process.env.WEBAPP_URL),
+    },
+  })
+);
 
 // GET /api/mood?month=YYYY-MM        -> entries for that month
 // GET /api/mood?days=7               -> entries from the last N days
@@ -102,15 +116,20 @@ app.get('/api/stats', requireTelegramAuth, async (req, res) => {
     }
     const todayKey = today && DATE_RE.test(today) ? today : new Date().toISOString().slice(0, 10);
 
-    const [monthEntries, allDatesDesc] = await Promise.all([
+    const [monthEntries, allEntries] = await Promise.all([
       getEntriesForMonth(req.dbUser.id, month),
-      getAllEntryDatesDesc(req.dbUser.id),
+      getAllEntries(req.dbUser.id),
     ]);
+
+    const allDates = allEntries.map((e) => e.date);
+    const streak = computeStreak(allDates, todayKey);
+    const longestStreak = computeLongestStreak(allDates);
 
     res.json({
       mostFrequent: computeMostFrequent(monthEntries),
-      streak: computeStreak(allDatesDesc, todayKey),
+      streak,
       totalEntriesThisMonth: monthEntries.length,
+      ...computeGamification(allEntries, streak, longestStreak),
     });
   } catch (err) {
     console.error('GET /api/stats failed', err);

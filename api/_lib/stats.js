@@ -24,6 +24,24 @@ function computeStreak(datesDesc, todayKey) {
   return streak;
 }
 
+/** Longest run of consecutive-day entries the user has ever had, not just
+ * the current one — so a badge earned by a past 7-day streak stays earned
+ * even after the streak later breaks. */
+function computeLongestStreak(dates) {
+  if (!dates.length) return 0;
+
+  const sorted = [...new Set(dates)].sort();
+  let longest = 1;
+  let current = 1;
+
+  for (let i = 1; i < sorted.length; i++) {
+    current = shiftDateKey(sorted[i - 1], 1) === sorted[i] ? current + 1 : 1;
+    longest = Math.max(longest, current);
+  }
+
+  return longest;
+}
+
 function computeMostFrequent(entries) {
   if (!entries.length) return null;
 
@@ -41,4 +59,4 @@ function computeMostFrequent(entries) {
   return best;
 }
 
-module.exports = { computeStreak, computeMostFrequent, shiftDateKey };
+module.exports = { computeStreak, computeLongestStreak, computeMostFrequent, shiftDateKey };

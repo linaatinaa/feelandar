@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ============================================================
+   Telegram native theme vars — kept ONLY for native chrome
+   (header/back button color via tg.setHeaderColor, etc). Our own
+   UI uses the --color-* / --mood-* tokens below instead.
+   ============================================================ */
 :root {
   --tg-bg-color: #ffffff;
   --tg-text-color: #111111;
@@ -11,7 +16,6 @@
   --tg-button-text-color: #ffffff;
   --tg-secondary-bg-color: #f5f5f7;
 }
-
 :root[data-theme='dark'] {
   --tg-bg-color: #17212b;
   --tg-text-color: #f1f1f1;
@@ -22,6 +26,63 @@
   --tg-secondary-bg-color: #232e3c;
 }
 
+/* ============================================================
+   Feelandar design tokens — two selectable "skins".
+   Same structure/layout everywhere, only these values change.
+   ============================================================ */
+:root,
+:root[data-skin='dreamy'] {
+  --color-bg: #fff6fa;
+  --color-surface: #ffffff;
+  --color-surface-alt: #f6effe;
+  --color-primary: #ff8fb1;
+  --color-secondary: #b79ced;
+  --color-accent: #ffb84d;
+  --color-ink: #423a4d;
+  --color-muted: #a297b3;
+  --color-border: #f1e3f6;
+
+  --mood-happy: #ffd98e;
+  --mood-neutral: #dfe1f4;
+  --mood-tired: #d8c6f2;
+  --mood-sad: #c3dbf7;
+  --mood-angry: #f6c7c4;
+
+  --gradient-app: linear-gradient(135deg, #ffe3ec 0%, #f3e1ff 35%, #e1eeff 70%, #fff3e0 100%);
+  --shadow-soft: 0 10px 30px -12px rgba(183, 140, 200, 0.35);
+  --shadow-glow: 0 0 18px rgba(255, 184, 77, 0.55);
+
+  --fw-heading: 600;
+  --fw-body: 450;
+  --decor-opacity: 0.55;
+}
+
+:root[data-skin='bold'] {
+  --color-bg: #0f1120;
+  --color-surface: #1a1d38;
+  --color-surface-alt: #232748;
+  --color-primary: #3da9fc;
+  --color-secondary: #ff6b45;
+  --color-accent: #a6ff5e;
+  --color-ink: #f4f6ff;
+  --color-muted: #8b90b3;
+  --color-border: #2c3060;
+
+  --mood-happy: #ffc93c;
+  --mood-neutral: #7c86ab;
+  --mood-tired: #9d7bff;
+  --mood-sad: #3da9fc;
+  --mood-angry: #ff4d6d;
+
+  --gradient-app: linear-gradient(135deg, #0f1120 0%, #1a1440 40%, #0d1a38 70%, #16102f 100%);
+  --shadow-soft: 0 10px 30px -10px rgba(0, 0, 0, 0.6);
+  --shadow-glow: 0 0 22px rgba(61, 169, 252, 0.65);
+
+  --fw-heading: 800;
+  --fw-body: 600;
+  --decor-opacity: 0.9;
+}
+
 html,
 body,
 #root {
@@ -30,8 +91,26 @@ body,
 
 body {
   margin: 0;
-  background: var(--tg-bg-color);
-  color: var(--tg-text-color);
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  background: var(--color-bg);
+  color: var(--color-ink);
+  font-family: 'Inter', system-ui, sans-serif;
+  font-weight: var(--fw-body);
   -webkit-tap-highlight-color: transparent;
+}
+
+h1, h2, h3, h4, .font-heading {
+  font-family: '"Baloo 2"', 'Baloo 2', system-ui, sans-serif;
+  font-weight: var(--fw-heading);
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.bg-app-animated {
+  background-size: 200% 200%;
 }

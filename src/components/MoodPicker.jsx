@@ -1,74 +1,133 @@
 import { useState } from 'react';
-import { MOODS } from '../lib/moods';
+import { motion, AnimatePresence } from 'framer-motion';
+import confetti from 'canvas-confetti';
+import MoodMascot from './mascots/MoodMascot';
+import { MOODS, findMood } from '../lib/moods';
 
 const MAX_NOTE_LENGTH = 200;
 
-export default function MoodPicker({ todayEntry, onSubmit, submitting }) {
+function fireConfetti(moodColor) {
+  confetti({
+    particleCount: 60,
+    spread: 65,
+    startVelocity: 32,
+    gravity: 1.1,
+    scalar: 0.85,
+    origin: { y: 0.55 },
+    colors: [moodColor, '#ffffff', '#ffd98e'],
+  });
+}
+
+export default function MoodPicker({ todayEntry, onSubmit, submitting, onMoodPreview }) {
   const [selected, setSelected] = useState(null);
   const [note, setNote] = useState('');
   const alreadySubmitted = Boolean(todayEntry);
 
-  const displayEmoji = alreadySubmitted ? todayEntry.mood_emoji : selected;
-  const displayNote = alreadySubmitted ? todayEntry.note || '' : note;
+  function handlePick(value) {
+    setSelected(value);
+    onMoodPreview?.(value);
+  }
 
   function handleSubmit() {
     if (!selected || alreadySubmitted) return;
-    onSubmit({ mood_emoji: selected, note: note.trim() || null });
+    const mood = MOODS.find((m) => m.value === selected);
+    onSubmit({ mood_emoji: mood.emoji, note: note.trim() || null });
+    fireConfetti(getComputedMoodColor(selected));
+  }
+
+  if (alreadySubmitted) {
+    const mood = findMood(todayEntry.mood_emoji);
+    return (
+      <section className="rounded-3xl p-6 mb-4 text-center shadow-soft bg-surface border border-border">
+        <motion.div
+          initial={{ scale: 0.7, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ type: 'spring', stiffness: 200, damping: 12 }}
+        >
+          <MoodMascot mood={mood?.value} size={84} className="mx-auto drop-shadow" />
+        </motion.div>
+        <p className="font-heading text-base mt-3 text-ink">Mood hari ini sudah tercatat ✓</p>
+        <p className="text-sm text-muted mt-1">Sampai jumpa besok untuk catatan berikutnya!</p>
+      </section>
+    );
   }
 
   return (
-    <section
-      className="rounded-2xl p-4 mb-4"
-      style={{ background: 'var(--tg-secondary-bg-color)' }}
-    >
-      <h2 className="text-sm font-medium mb-3 opacity-70">Bagaimana perasaanmu hari ini?</h2>
+    <section className="rounded-3xl p-5 mb-4 shadow-soft bg-surface border border-border">
+      <h2 className="font-heading text-base text-ink mb-1">Bagaimana perasaanmu hari ini?</h2>
+      <p className="text-xs text-muted mb-3">Geser untuk lihat, ketuk untuk pilih</p>
 
-      <div className="flex justify-between mb-4">
+      <div className="flex gap-4 overflow-x-auto no-scrollbar px-2 py-2 snap-x snap-mandatory">
         {MOODS.map((m) => {
-          const isSelected = displayEmoji === m.emoji;
+          const isSelected = selected === m.value;
           return (
-            <button
+            <motion.button
               key={m.value}
               type="button"
-              disabled={alreadySubmitted}
-              onClick={() => setSelected(m.emoji)}
-              aria-label={m.label}
-              className={`text-3xl w-12 h-12 rounded-full flex items-center justify-center transition-all ${
-                isSelected ? 'scale-110' : 'opacity-60'
-              } ${alreadySubmitted ? 'cursor-default' : 'active:scale-95'}`}
-              style={{ background: isSelected ? m.color : 'transparent' }}
+              onClick={() => handlePick(m.value)}
+              whileTap={{ scale: 0.92 }}
+              className="snap-center shrink-0 flex flex-col items-center gap-2 rounded-2xl px-3 py-3 transition-colors"
+              style={{
+                background: isSelected ? 'var(--color-surface-alt)' : 'transparent',
+                boxShadow: isSelected ? 'var(--shadow-glow)' : 'none',
+              }}
             >
-              {m.emoji}
-            </button>
+              <motion.div
+                key={`${m.value}-${isSelected}`}
+                animate={isSelected ? { rotate: [0, -8, 8, -5, 5, 0], scale: 1.12 } : { scale: 1 }}
+                transition={{ duration: 0.5 }}
+              >
+                <MoodMascot mood={m.value} size={72} />
+              </motion.div>
+              <span
+                className="text-xs font-medium"
+                style={{ color: isSelected ? 'var(--color-ink)' : 'var(--color-muted)' }}
+              >
+                {m.label}
+              </span>
+            </motion.button>
           );
         })}
       </div>
 
-      <textarea
-        maxLength={MAX_NOTE_LENGTH}
-        disabled={alreadySubmitted}
-        value={displayNote}
-        onChange={(e) => setNote(e.target.value)}
-        placeholder="Catatan singkat (opsional)"
-        rows={2}
-        className="w-full rounded-xl p-3 text-sm resize-none outline-none disabled:opacity-70 placeholder:opacity-50"
-        style={{ background: 'var(--tg-bg-color)', color: 'var(--tg-text-color)' }}
-      />
-      {!alreadySubmitted && (
-        <div className="text-right text-xs opacity-40 mt-1 mb-2">
-          {note.length}/{MAX_NOTE_LENGTH}
-        </div>
-      )}
+      <AnimatePresence>
+        {selected && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            className="overflow-hidden"
+          >
+            <textarea
+              maxLength={MAX_NOTE_LENGTH}
+              value={note}
+              onChange={(e) => setNote(e.target.value)}
+              placeholder="Catatan singkat (opsional)"
+              rows={2}
+              className="w-full rounded-2xl p-3 mt-3 text-sm resize-none outline-none placeholder:opacity-50 bg-surface-alt text-ink border border-border"
+            />
+            <div className="text-right text-xs text-muted mt-1">
+              {note.length}/{MAX_NOTE_LENGTH}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
-      <button
+      <motion.button
         type="button"
         onClick={handleSubmit}
-        disabled={alreadySubmitted || !selected || submitting}
-        className="w-full mt-2 rounded-xl py-2.5 text-sm font-medium transition-opacity disabled:opacity-50"
-        style={{ background: 'var(--tg-button-color)', color: 'var(--tg-button-text-color)' }}
+        disabled={!selected || submitting}
+        whileTap={{ scale: 0.97 }}
+        className="w-full mt-3 rounded-2xl py-3 text-sm font-heading font-semibold text-white disabled:opacity-40 transition-opacity"
+        style={{ background: 'linear-gradient(135deg, var(--color-primary), var(--color-secondary))' }}
       >
-        {alreadySubmitted ? 'Sudah diisi hari ini ✓' : submitting ? 'Menyimpan…' : 'Simpan Mood'}
-      </button>
+        {submitting ? 'Menyimpan…' : 'Simpan Mood'}
+      </motion.button>
     </section>
   );
+}
+
+function getComputedMoodColor(value) {
+  if (typeof window === 'undefined') return '#ffd98e';
+  return getComputedStyle(document.documentElement).getPropertyValue(`--mood-${value}`).trim() || '#ffd98e';
 }

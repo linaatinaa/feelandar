@@ -1,6 +1,11 @@
-const TelegramBot = require('node-telegram-bot-api');
+const { TelegramBot } = require('node-telegram-bot-api');
+const { getOrCreateUser } = require('./db');
 
 let bot = null;
+
+function escapeHtml(str) {
+  return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
 
 /**
  * Lazily builds a node-telegram-bot-api instance with polling disabled —
@@ -16,19 +21,32 @@ function getBot() {
   bot = new TelegramBot(token, { polling: false, webHook: false });
 
   bot.onText(/^\/start\b/, (msg) => {
+    // Best-effort: make sure this Telegram user already has a `users` row
+    // the moment they say /start, not only once they open the mini app.
+    // Fire-and-forget on purpose — the greeting below must still be sent
+    // even if this fails (e.g. Supabase env vars not configured yet).
+    if (msg.from) {
+      getOrCreateUser(msg.from).catch((err) => {
+        console.error('Failed to upsert user on /start', err);
+      });
+    }
+
+    const firstName = msg.from?.first_name ? escapeHtml(msg.from.first_name) : 'teman';
     const webAppUrl = process.env.WEBAPP_URL;
     const text = [
-      'Halo! 👋 Selamat datang di *MoodDiary*.',
+      `Halo, <b>${firstName}</b>! 👋🌈🌙✨`,
       '',
-      'Catat suasana hatimu setiap hari dan lihat polanya lewat kalender visual, streak, dan grafik tren mingguan.',
+      'Selamat datang di <b>Feelandar</b> — teman kecil buat nyatetin mood harianmu.',
       '',
-      'Tap tombol di bawah untuk mulai mencatat mood hari ini 👇',
+      'Pilih emoji, tulis cerita singkat, kumpulin <i>streak</i> dan badge, terus lihat progress kamu dalam kalender warna-warni.',
+      '',
+      'Gimana perasaanmu hari ini? 💭 Yuk cerita lewat tombol di bawah 👇',
     ].join('\n');
 
-    const options = { parse_mode: 'Markdown' };
+    const options = { parse_mode: 'HTML' };
     if (webAppUrl) {
       options.reply_markup = {
-        inline_keyboard: [[{ text: '📔 Buka MoodDiary', web_app: { url: webAppUrl } }]],
+        inline_keyboard: [[{ text: '🌈 Catat Mood Sekarang', web_app: { url: webAppUrl } }]],
       };
     }
 

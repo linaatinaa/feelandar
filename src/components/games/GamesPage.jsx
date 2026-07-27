@@ -1,14 +1,18 @@
 import { useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import GameCatalog from './GameCatalog';
-import WordGame from './WordGame';
+import BubblePop from './BubblePop';
 import MemoryGame from './MemoryGame';
 import MathGame from './MathGame';
+import ColorMatch from './ColorMatch';
+import SimonSequence from './SimonSequence';
 
 const GAME_COMPONENTS = {
-  word: WordGame,
+  bubble: BubblePop,
   memory: MemoryGame,
   math: MathGame,
+  colormatch: ColorMatch,
+  simon: SimonSequence,
 };
 
 export default function GamesPage() {

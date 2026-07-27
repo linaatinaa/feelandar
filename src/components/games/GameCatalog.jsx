@@ -12,10 +12,10 @@ const cardVariants = {
 
 const GAMES = [
   {
-    id: 'word',
-    title: 'Tebak Kata',
-    tagline: 'Tebak kata 5 huruf dalam 6 percobaan',
-    icon: '🔤',
+    id: 'bubble',
+    title: 'Bubble Pop Mood',
+    tagline: 'Pop gelembung warna-warni sebelum melayang hilang',
+    icon: '🫧',
   },
   {
     id: 'memory',
@@ -28,6 +28,18 @@ const GAMES = [
     title: 'Adu Cepat Hitung',
     tagline: 'Jawab soal matematika sebelum waktu habis',
     icon: '⏱️',
+  },
+  {
+    id: 'colormatch',
+    title: 'Color Match Reflex',
+    tagline: 'Tap warna tampilan teks, bukan artinya',
+    icon: '🎨',
+  },
+  {
+    id: 'simon',
+    title: 'Emoji Memory Sequence',
+    tagline: 'Ingat & ulangi urutan mood yang makin panjang',
+    icon: '🔁',
   },
 ];
 

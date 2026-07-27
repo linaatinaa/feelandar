@@ -1,8 +1,9 @@
 import { motion } from 'framer-motion';
-import { HomeIcon, ProfileIcon } from './icons/NavIcons';
+import { HomeIcon, GameIcon, ProfileIcon } from './icons/NavIcons';
 
 const TABS = [
   { id: 'home', label: 'Home', Icon: HomeIcon },
+  { id: 'games', label: 'Main', Icon: GameIcon },
   { id: 'profile', label: 'Profil', Icon: ProfileIcon },
 ];
 
@@ -21,10 +22,13 @@ export default function BottomNav({ active, onChange }) {
           return (
             <motion.button
               key={id}
+              layout
               type="button"
               onClick={() => onChange(id)}
               whileTap={{ scale: 0.92 }}
-              className="relative flex items-center gap-1.5 px-4 py-2.5 rounded-full"
+              aria-label={label}
+              aria-current={isActive ? 'page' : undefined}
+              className="relative flex items-center gap-1.5 px-3.5 py-2.5 rounded-full"
             >
               {isActive && (
                 <motion.div
@@ -35,12 +39,16 @@ export default function BottomNav({ active, onChange }) {
                 />
               )}
               <Icon className="relative" style={{ color: isActive ? '#fff' : 'var(--color-muted)' }} />
-              <span
-                className="relative text-xs font-heading font-semibold"
-                style={{ color: isActive ? '#fff' : 'var(--color-muted)' }}
-              >
-                {label}
-              </span>
+              {isActive && (
+                <motion.span
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className="relative text-xs font-heading font-semibold whitespace-nowrap"
+                  style={{ color: '#fff' }}
+                >
+                  {label}
+                </motion.span>
+              )}
             </motion.button>
           );
         })}

@@ -7,6 +7,7 @@ import StatsCard from './components/StatsCard';
 import MoodChart from './components/MoodChart';
 import ThemePicker from './components/ThemePicker';
 import ProfilePage from './components/ProfilePage';
+import GamesPage from './components/games/GamesPage';
 import BottomNav from './components/BottomNav';
 import { initTelegram, applyTelegramTheme, getWebApp } from './lib/telegram';
 import { api } from './lib/api';
@@ -223,6 +224,16 @@ export default function App() {
                           onSelectEntry={setSelectedEntry}
                         />
                         <MoodChart entries={recentEntries} />
+                      </motion.div>
+                    ) : page === 'games' ? (
+                      <motion.div
+                        key="games"
+                        initial={{ opacity: 0, x: 12 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: 12 }}
+                        transition={{ duration: 0.2 }}
+                      >
+                        <GamesPage />
                       </motion.div>
                     ) : (
                       <motion.div

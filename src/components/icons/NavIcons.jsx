@@ -20,6 +20,22 @@ export function HomeIcon({ className, style }) {
   );
 }
 
+export function GameIcon({ className, style }) {
+  return (
+    <svg viewBox="0 0 28 28" width="22" height="22" className={className} style={style} fill="none">
+      <path
+        d="M8 9.5h12a5 5 0 0 1 5 5.7l-.7 4.3a3 3 0 0 1-5.3 1.4l-1.6-2.1a2 2 0 0 0-1.6-.8h-2.6a2 2 0 0 0-1.6.8l-1.6 2.1a3 3 0 0 1-5.3-1.4l-.7-4.3a5 5 0 0 1 5-5.7Z"
+        stroke="currentColor"
+        strokeWidth="2.3"
+        strokeLinejoin="round"
+      />
+      <path d="M10.8 14.5v3M9.3 16h3" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+      <circle cx="19" cy="14" r="1.15" fill="currentColor" />
+      <circle cx="21.3" cy="16.3" r="1.15" fill="currentColor" />
+    </svg>
+  );
+}
+
 export function ProfileIcon({ className, style }) {
   return (
     <svg viewBox="0 0 28 28" width="22" height="22" className={className} style={style} fill="none">

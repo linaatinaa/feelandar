@@ -41,6 +41,24 @@ const GAMES = [
     tagline: 'Ingat & ulangi urutan mood yang makin panjang',
     icon: '🔁',
   },
+  {
+    id: 'whack',
+    title: 'Whack-a-Worry',
+    tagline: 'Pukul kekhawatiran sebelum ilang duluan',
+    icon: '🔨',
+  },
+  {
+    id: 'rhythm',
+    title: 'Tap the Rhythm',
+    tagline: 'Tap pas lingkaran paling besar, rasakan ritmenya',
+    icon: '🎵',
+  },
+  {
+    id: 'mirror',
+    title: 'Mirror Face-Off',
+    tagline: 'Susun ekspresi wajah sesuai target',
+    icon: '🪞',
+  },
 ];
 
 export default function GameCatalog({ onSelectGame }) {

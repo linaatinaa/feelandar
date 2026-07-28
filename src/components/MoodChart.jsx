@@ -2,6 +2,13 @@ import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianG
 import { getLastNDays, toDateKey, WEEKDAYS_ID } from '../lib/date';
 import { MOOD_SCORE } from '../lib/moods';
 
+function averageScore(emojis) {
+  if (!emojis?.length) return null;
+  const scores = emojis.map((e) => MOOD_SCORE[e]).filter((s) => s != null);
+  if (!scores.length) return null;
+  return scores.reduce((sum, s) => sum + s, 0) / scores.length;
+}
+
 function buildChartData(entries) {
   const byDate = Object.fromEntries(entries.map((e) => [e.date, e]));
   return getLastNDays(7).map((date) => {
@@ -10,8 +17,8 @@ function buildChartData(entries) {
     return {
       date: key,
       label: WEEKDAYS_ID[date.getDay()],
-      score: entry ? MOOD_SCORE[entry.mood_emoji] : null,
-      emoji: entry?.mood_emoji || null,
+      score: entry ? averageScore(entry.mood_emojis) : null,
+      emoji: entry?.mood_emojis?.[0] || null,
     };
   });
 }
@@ -46,7 +53,7 @@ export default function MoodChart({ entries }) {
         <LineChart data={data} margin={{ top: 12, right: 12, left: -20, bottom: 0 }}>
           <CartesianGrid strokeDasharray="3 3" opacity={0.15} vertical={false} />
           <XAxis dataKey="label" tick={{ fontSize: 10, fill: 'var(--color-muted)' }} axisLine={false} tickLine={false} />
-          <YAxis domain={[0, 6]} hide />
+          <YAxis domain={[0, 10]} hide />
           <Tooltip content={<ChartTooltip />} />
           <Line
             type="monotone"

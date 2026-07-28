@@ -1,11 +1,6 @@
 import { motion } from 'framer-motion';
 import { SKINS } from '../lib/theme';
 
-const CARD_DECOR = {
-  dreamy: ['✨', '☁️', '⭐️'],
-  bold: ['⚡️', '▲', '●'],
-};
-
 export default function ThemePicker({ onSelect }) {
   return (
     <div
@@ -28,45 +23,40 @@ export default function ThemePicker({ onSelect }) {
         </p>
       </motion.div>
 
-      <div className="w-full max-w-sm flex flex-col gap-4">
+      <div className="w-full max-w-sm flex flex-col gap-3">
         {Object.values(SKINS).map((skin, i) => (
           <motion.button
             key={skin.id}
             type="button"
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 + i * 0.1 }}
+            transition={{ delay: 0.06 + i * 0.07 }}
             whileTap={{ scale: 0.97 }}
             onClick={() => onSelect(skin.id)}
-            className="relative overflow-hidden rounded-3xl p-5 text-left shadow-lg"
+            className="relative overflow-hidden rounded-3xl p-4 text-left shadow-lg flex items-center gap-3"
             style={{
-              background:
-                skin.id === 'dreamy'
-                  ? 'linear-gradient(135deg, #fff0f6 0%, #f2e6ff 100%)'
-                  : 'linear-gradient(135deg, #12142b 0%, #1c1548 100%)',
-              border: skin.id === 'dreamy' ? '1px solid #f3ddef' : '1px solid #33356b',
+              background: `linear-gradient(135deg, ${skin.swatches[0]} 0%, ${skin.swatches[3]} 100%)`,
+              border: `1px solid ${skin.dark ? '#3a3550' : '#00000014'}`,
             }}
           >
-            <div className="absolute top-3 right-4 text-lg opacity-40 flex gap-1">
-              {CARD_DECOR[skin.id].map((d, idx) => (
-                <span key={idx}>{d}</span>
-              ))}
+            <span className="text-2xl shrink-0">{skin.emoji}</span>
+            <div className="min-w-0 flex-1">
+              <div
+                className="font-heading text-base leading-tight"
+                style={{ color: skin.dark ? '#f4f6ff' : '#3a2f45', fontWeight: 700 }}
+              >
+                {skin.label}
+              </div>
+              <div className="text-xs leading-tight" style={{ color: skin.dark ? '#a7aede' : '#7a6f88' }}>
+                {skin.tagline}
+              </div>
             </div>
-            <div
-              className="font-heading text-xl mb-1"
-              style={{ color: skin.id === 'dreamy' ? '#423a4d' : '#f4f6ff', fontWeight: 700 }}
-            >
-              {skin.label}
-            </div>
-            <div className="text-xs mb-3" style={{ color: skin.id === 'dreamy' ? '#8b7f9c' : '#9aa0c9' }}>
-              {skin.tagline}
-            </div>
-            <div className="flex gap-2">
+            <div className="flex gap-1 shrink-0">
               {skin.swatches.map((c) => (
                 <span
                   key={c}
-                  className="w-6 h-6 rounded-full"
-                  style={{ background: c, boxShadow: '0 2px 6px rgba(0,0,0,0.2)' }}
+                  className="w-4 h-4 rounded-full"
+                  style={{ background: c, boxShadow: '0 1px 4px rgba(0,0,0,0.25)' }}
                 />
               ))}
             </div>

@@ -26,6 +26,8 @@ async function getOrCreateUser(telegramUser) {
   return data;
 }
 
+const MOOD_ENTRY_COLUMNS = 'id, date, mood_emojis, doing, story, created_at';
+
 async function getEntriesForMonth(userId, monthKey) {
   // monthKey: 'YYYY-MM'
   const start = `${monthKey}-01`;
@@ -36,11 +38,24 @@ async function getEntriesForMonth(userId, monthKey) {
   const supabase = getSupabase();
   const { data, error } = await supabase
     .from('mood_entries')
-    .select('id, date, mood_emoji, note, created_at')
+    .select(MOOD_ENTRY_COLUMNS)
     .eq('user_id', userId)
     .gte('date', start)
     .lte('date', end)
     .order('date', { ascending: true });
+
+  if (error) throw error;
+  return data;
+}
+
+async function getEntryForDate(userId, date) {
+  const supabase = getSupabase();
+  const { data, error } = await supabase
+    .from('mood_entries')
+    .select(MOOD_ENTRY_COLUMNS)
+    .eq('user_id', userId)
+    .eq('date', date)
+    .maybeSingle();
 
   if (error) throw error;
   return data;
@@ -54,7 +69,7 @@ async function getRecentEntries(userId, days) {
 
   const { data, error } = await supabase
     .from('mood_entries')
-    .select('id, date, mood_emoji, note, created_at')
+    .select(MOOD_ENTRY_COLUMNS)
     .eq('user_id', userId)
     .gte('date', sinceKey)
     .order('date', { ascending: true });
@@ -72,7 +87,7 @@ async function getAllEntries(userId) {
   const supabase = getSupabase();
   const { data, error } = await supabase
     .from('mood_entries')
-    .select('date, mood_emoji, created_at')
+    .select('date, mood_emojis, created_at')
     .eq('user_id', userId)
     .order('date', { ascending: true });
 
@@ -80,25 +95,150 @@ async function getAllEntries(userId) {
   return data;
 }
 
-async function upsertMoodEntry(userId, { date, mood_emoji, note }) {
+async function upsertMoodEntry(userId, { date, mood_emojis, doing, story }) {
   const supabase = getSupabase();
   const { data, error } = await supabase
     .from('mood_entries')
     .upsert(
-      { user_id: userId, date, mood_emoji, note: note || null },
+      { user_id: userId, date, mood_emojis, doing: doing || null, story: story || null },
       { onConflict: 'user_id,date' }
     )
-    .select('id, date, mood_emoji, note, created_at')
+    .select(MOOD_ENTRY_COLUMNS)
     .single();
 
   if (error) throw error;
   return data;
 }
 
+// ============================================================
+// Habits
+// ============================================================
+
+async function getHabits(userId) {
+  const supabase = getSupabase();
+  const { data, error } = await supabase
+    .from('habits')
+    .select('id, name, emoji, created_at')
+    .eq('user_id', userId)
+    .order('created_at', { ascending: true });
+
+  if (error) throw error;
+  return data;
+}
+
+async function createHabit(userId, { name, emoji }) {
+  const supabase = getSupabase();
+  const { data, error } = await supabase
+    .from('habits')
+    .insert({ user_id: userId, name, emoji })
+    .select('id, name, emoji, created_at')
+    .single();
+
+  if (error) throw error;
+  return data;
+}
+
+async function deleteHabit(userId, habitId) {
+  const supabase = getSupabase();
+  const { error } = await supabase.from('habits').delete().eq('user_id', userId).eq('id', habitId);
+  if (error) throw error;
+}
+
+/** Habit completion log for a date range, oldest first. */
+async function getHabitLogs(userId, sinceDate) {
+  const supabase = getSupabase();
+  const { data, error } = await supabase
+    .from('habit_logs')
+    .select('habit_id, date')
+    .eq('user_id', userId)
+    .gte('date', sinceDate)
+    .order('date', { ascending: true });
+
+  if (error) throw error;
+  return data;
+}
+
+async function getHabitLogsForDate(userId, date) {
+  const supabase = getSupabase();
+  const { data, error } = await supabase
+    .from('habit_logs')
+    .select('habit_id')
+    .eq('user_id', userId)
+    .eq('date', date);
+
+  if (error) throw error;
+  return data.map((row) => row.habit_id);
+}
+
+async function markHabitDone(userId, habitId, date) {
+  const supabase = getSupabase();
+  const { error } = await supabase
+    .from('habit_logs')
+    .upsert({ user_id: userId, habit_id: habitId, date }, { onConflict: 'habit_id,date' });
+  if (error) throw error;
+}
+
+async function markHabitUndone(userId, habitId, date) {
+  const supabase = getSupabase();
+  const { error } = await supabase
+    .from('habit_logs')
+    .delete()
+    .eq('user_id', userId)
+    .eq('habit_id', habitId)
+    .eq('date', date);
+  if (error) throw error;
+}
+
+// ============================================================
+// Expenses
+// ============================================================
+
+async function getExpensesForDate(userId, date) {
+  const supabase = getSupabase();
+  const { data, error } = await supabase
+    .from('expenses')
+    .select('id, label, amount, created_at')
+    .eq('user_id', userId)
+    .eq('date', date)
+    .order('created_at', { ascending: true });
+
+  if (error) throw error;
+  return data;
+}
+
+async function addExpense(userId, { date, label, amount }) {
+  const supabase = getSupabase();
+  const { data, error } = await supabase
+    .from('expenses')
+    .insert({ user_id: userId, date, label, amount })
+    .select('id, label, amount, created_at')
+    .single();
+
+  if (error) throw error;
+  return data;
+}
+
+async function deleteExpense(userId, expenseId) {
+  const supabase = getSupabase();
+  const { error } = await supabase.from('expenses').delete().eq('user_id', userId).eq('id', expenseId);
+  if (error) throw error;
+}
+
 module.exports = {
   getOrCreateUser,
   getEntriesForMonth,
+  getEntryForDate,
   getRecentEntries,
   getAllEntries,
   upsertMoodEntry,
+  getHabits,
+  createHabit,
+  deleteHabit,
+  getHabitLogs,
+  getHabitLogsForDate,
+  markHabitDone,
+  markHabitUndone,
+  getExpensesForDate,
+  addExpense,
+  deleteExpense,
 };

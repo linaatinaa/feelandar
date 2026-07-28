@@ -20,6 +20,49 @@ export function HomeIcon({ className, style }) {
   );
 }
 
+export function CalendarIcon({ className, style }) {
+  return (
+    <svg viewBox="0 0 28 28" width="22" height="22" className={className} style={style} fill="none">
+      <rect x="4.5" y="7" width="19" height="17" rx="3" stroke="currentColor" strokeWidth="2.3" />
+      <path d="M4.5 12.2h19" stroke="currentColor" strokeWidth="2.3" />
+      <path d="M9.5 4.5v5M18.5 4.5v5" stroke="currentColor" strokeWidth="2.3" strokeLinecap="round" />
+      <circle cx="9.7" cy="17.2" r="1.3" fill="currentColor" />
+      <circle cx="14" cy="17.2" r="1.3" fill="currentColor" />
+      <circle cx="18.3" cy="17.2" r="1.3" fill="currentColor" />
+    </svg>
+  );
+}
+
+export function HabitIcon({ className, style }) {
+  return (
+    <svg viewBox="0 0 28 28" width="22" height="22" className={className} style={style} fill="none">
+      <rect x="5.5" y="5.5" width="17" height="18.5" rx="3" stroke="currentColor" strokeWidth="2.3" />
+      <path
+        d="M10.3 4.2h7.4a1 1 0 0 1 1 1v1.4a1 1 0 0 1-1 1h-7.4a1 1 0 0 1-1-1V5.2a1 1 0 0 1 1-1Z"
+        stroke="currentColor"
+        strokeWidth="2"
+      />
+      <path d="M9.5 15l2.1 2.1 4.9-4.9" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M9.5 20.2h9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" opacity="0.55" />
+    </svg>
+  );
+}
+
+export function WalletIcon({ className, style }) {
+  return (
+    <svg viewBox="0 0 28 28" width="22" height="22" className={className} style={style} fill="none">
+      <path
+        d="M6 8.5A2.5 2.5 0 0 1 8.5 6h11A2.5 2.5 0 0 1 22 8.5v1"
+        stroke="currentColor"
+        strokeWidth="2.3"
+        strokeLinecap="round"
+      />
+      <rect x="4" y="9.5" width="20" height="13.5" rx="3.2" stroke="currentColor" strokeWidth="2.3" />
+      <circle cx="17.8" cy="16.2" r="1.9" fill="currentColor" />
+    </svg>
+  );
+}
+
 export function GameIcon({ className, style }) {
   return (
     <svg viewBox="0 0 28 28" width="22" height="22" className={className} style={style} fill="none">

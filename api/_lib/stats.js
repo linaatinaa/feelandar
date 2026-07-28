@@ -42,12 +42,14 @@ function computeLongestStreak(dates) {
   return longest;
 }
 
+/** `entries` each carry a `mood_emojis` array (a day can have more than one
+ * mood) — counts every emoji across every entry, not one per day. */
 function computeMostFrequent(entries) {
-  if (!entries.length) return null;
-
   const counts = new Map();
   for (const entry of entries) {
-    counts.set(entry.mood_emoji, (counts.get(entry.mood_emoji) || 0) + 1);
+    for (const emoji of entry.mood_emojis || []) {
+      counts.set(emoji, (counts.get(emoji) || 0) + 1);
+    }
   }
 
   let best = null;

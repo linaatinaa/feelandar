@@ -6,7 +6,7 @@ module.exports = {
     extend: {
       fontFamily: {
         heading: ['"Baloo 2"', 'system-ui', 'sans-serif'],
-        body: ['Inter', 'system-ui', 'sans-serif'],
+        body: ['Nunito', 'system-ui', 'sans-serif'],
       },
       colors: {
         bg: 'var(--color-bg)',
@@ -20,10 +20,15 @@ module.exports = {
         border: 'var(--color-border)',
         mood: {
           happy: 'var(--mood-happy)',
+          loved: 'var(--mood-loved)',
+          calm: 'var(--mood-calm)',
+          excited: 'var(--mood-excited)',
           neutral: 'var(--mood-neutral)',
           tired: 'var(--mood-tired)',
           sad: 'var(--mood-sad)',
           angry: 'var(--mood-angry)',
+          anxious: 'var(--mood-anxious)',
+          sick: 'var(--mood-sick)',
         },
       },
       backgroundImage: {

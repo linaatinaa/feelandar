@@ -85,7 +85,8 @@ export default function Calendar({
 
           const key = toDateKey(date);
           const entry = entriesByDate[key];
-          const mood = entry ? findMood(entry.mood_emoji) : null;
+          const primaryEmoji = entry?.mood_emojis?.[0];
+          const mood = primaryEmoji ? findMood(primaryEmoji) : null;
           const isToday = key === todayKey;
 
           return (
@@ -107,7 +108,7 @@ export default function Calendar({
                 '--tw-ring-offset-color': 'var(--color-surface)',
               }}
             >
-              {entry ? <span className="text-base leading-none">{entry.mood_emoji}</span> : date.getDate()}
+              {entry ? <span className="text-base leading-none">{primaryEmoji}</span> : date.getDate()}
             </motion.button>
           );
         })}

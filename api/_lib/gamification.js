@@ -37,8 +37,8 @@ const BADGE_DEFS = [
     id: 'rainbow_collector',
     label: 'Rainbow Collector',
     icon: '🌈',
-    description: 'Pernah isi kelima jenis mood',
-    check: ({ distinctMoodCount }) => distinctMoodCount >= 5,
+    description: 'Pernah isi minimal 8 dari 10 jenis mood',
+    check: ({ distinctMoodCount }) => distinctMoodCount >= 8,
   },
   {
     id: 'night_owl',
@@ -64,13 +64,13 @@ const BADGE_DEFS = [
 ];
 
 /**
- * @param {{date: string, mood_emoji: string, created_at: string}[]} entries full history, any order
+ * @param {{date: string, mood_emojis: string[], created_at: string}[]} entries full history, any order
  * @param {number} currentStreak from computeStreak()
  * @param {number} longestStreak from computeLongestStreak()
  */
 function computeGamification(entries, currentStreak, longestStreak) {
   const totalEntries = entries.length;
-  const distinctMoodCount = new Set(entries.map((e) => e.mood_emoji)).size;
+  const distinctMoodCount = new Set(entries.flatMap((e) => e.mood_emojis || [])).size;
   const hasNightOwlEntry = entries.some((e) => hourInRange(e.created_at, 0, 4));
   const hasEarlyBirdEntry = entries.some((e) => hourInRange(e.created_at, 5, 8));
 

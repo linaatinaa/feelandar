@@ -29,30 +29,32 @@ export default function ProfilePage({ stats, skin, onChangeSkin }) {
 
       <section className="rounded-3xl p-4 mb-4 shadow-soft bg-surface border border-border">
         <h2 className="font-heading text-sm text-ink mb-3">Tampilan</h2>
-        <div className="grid grid-cols-2 gap-3">
+        <div className="flex flex-col gap-2">
           {Object.values(SKINS).map((s) => {
             const isActive = skin === s.id;
             return (
               <motion.button
                 key={s.id}
                 type="button"
-                whileTap={{ scale: 0.96 }}
+                whileTap={{ scale: 0.97 }}
                 onClick={() => onChangeSkin(s.id)}
-                className="rounded-2xl p-3 text-left border-2"
+                className="rounded-2xl p-3 text-left border-2 flex items-center gap-3"
                 style={{
                   borderColor: isActive ? 'var(--color-primary)' : 'var(--color-border)',
                   background: 'var(--color-surface-alt)',
                 }}
               >
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm font-heading font-semibold text-ink">{s.label}</span>
-                  {isActive && <span className="text-xs">✓</span>}
+                <span className="text-xl shrink-0">{s.emoji}</span>
+                <div className="min-w-0 flex-1">
+                  <div className="text-sm font-heading font-semibold text-ink leading-tight">{s.label}</div>
+                  <div className="text-[11px] text-muted leading-tight">{s.tagline}</div>
                 </div>
-                <div className="flex gap-1.5">
+                <div className="flex gap-1 shrink-0">
                   {s.swatches.map((c) => (
-                    <span key={c} className="w-4 h-4 rounded-full" style={{ background: c }} />
+                    <span key={c} className="w-3.5 h-3.5 rounded-full" style={{ background: c }} />
                   ))}
                 </div>
+                {isActive && <span className="text-xs shrink-0">✓</span>}
               </motion.button>
             );
           })}

@@ -27,56 +27,166 @@
 }
 
 /* ============================================================
-   Feelandar design tokens — two selectable "skins".
-   Same structure/layout everywhere, only these values change.
+   Feelandar design tokens — five selectable "skins".
+   Same structure/layout everywhere, only these values change:
+   palette, gradient, glow color, and heading/body font-weight.
    ============================================================ */
+
+/* ---------- Bubblegum — girly, manis & pink ---------- */
 :root,
-:root[data-skin='dreamy'] {
-  --color-bg: #fff6fa;
+:root[data-skin='bubblegum'] {
+  --color-bg: #fff5fa;
   --color-surface: #ffffff;
-  --color-surface-alt: #f6effe;
-  --color-primary: #ff8fb1;
-  --color-secondary: #b79ced;
-  --color-accent: #ffb84d;
-  --color-ink: #423a4d;
-  --color-muted: #a297b3;
-  --color-border: #f1e3f6;
+  --color-surface-alt: #ffeef5;
+  --color-primary: #ff7ab0;
+  --color-secondary: #ffb6d9;
+  --color-accent: #ffcf7a;
+  --color-ink: #4a2f3d;
+  --color-muted: #b98ca3;
+  --color-border: #ffd9e8;
 
   --mood-happy: #ffd98e;
-  --mood-neutral: #dfe1f4;
-  --mood-tired: #d8c6f2;
-  --mood-sad: #c3dbf7;
-  --mood-angry: #f6c7c4;
+  --mood-loved: #ff9ec4;
+  --mood-calm: #a8e6cf;
+  --mood-excited: #ffb37a;
+  --mood-neutral: #e8d9e8;
+  --mood-tired: #d4b3ea;
+  --mood-sad: #b8d4f0;
+  --mood-angry: #ff9b9b;
+  --mood-anxious: #d9e39e;
+  --mood-sick: #b8dfc0;
 
-  --gradient-app: linear-gradient(135deg, #ffe3ec 0%, #f3e1ff 35%, #e1eeff 70%, #fff3e0 100%);
-  --shadow-soft: 0 10px 30px -12px rgba(183, 140, 200, 0.35);
-  --shadow-glow: 0 0 18px rgba(255, 184, 77, 0.55);
+  --gradient-app: linear-gradient(135deg, #ffd9e8 0%, #ffe6a7 55%, #fff7fa 100%);
+  --shadow-soft: 0 10px 30px -12px rgba(255, 122, 176, 0.35);
+  --shadow-glow: 0 0 18px rgba(255, 207, 122, 0.55);
+
+  --fw-heading: 700;
+  --fw-body: 500;
+  --decor-opacity: 0.55;
+}
+
+/* ---------- Lavender Dream — girly, lembut & dreamy ---------- */
+:root[data-skin='lavender'] {
+  --color-bg: #faf7ff;
+  --color-surface: #ffffff;
+  --color-surface-alt: #f1ebff;
+  --color-primary: #a37bea;
+  --color-secondary: #c8a3f0;
+  --color-accent: #8fd4ea;
+  --color-ink: #3d3352;
+  --color-muted: #a99bc2;
+  --color-border: #e6ddff;
+
+  --mood-happy: #ffe1a8;
+  --mood-loved: #f0aee0;
+  --mood-calm: #a8dff0;
+  --mood-excited: #ffb896;
+  --mood-neutral: #dcd4ee;
+  --mood-tired: #c3a8ea;
+  --mood-sad: #a8c0ea;
+  --mood-angry: #f0a3ae;
+  --mood-anxious: #cfe0a3;
+  --mood-sick: #a8e0c0;
+
+  --gradient-app: linear-gradient(135deg, #e6ddff 0%, #c8e8f5 55%, #faf7ff 100%);
+  --shadow-soft: 0 10px 30px -12px rgba(163, 123, 234, 0.32);
+  --shadow-glow: 0 0 18px rgba(143, 212, 234, 0.55);
 
   --fw-heading: 600;
   --fw-body: 450;
   --decor-opacity: 0.55;
 }
 
+/* ---------- Nature — netral, adem & earthy ---------- */
+:root[data-skin='nature'] {
+  --color-bg: #f7faf2;
+  --color-surface: #ffffff;
+  --color-surface-alt: #eaf4e0;
+  --color-primary: #4e9a6f;
+  --color-secondary: #7fb896;
+  --color-accent: #d9ab5a;
+  --color-ink: #2f3d33;
+  --color-muted: #7c9585;
+  --color-border: #dceccd;
+
+  --mood-happy: #f0d896;
+  --mood-loved: #e8a3b0;
+  --mood-calm: #9ecfc0;
+  --mood-excited: #f0a35e;
+  --mood-neutral: #cfd9c0;
+  --mood-tired: #b3a0d0;
+  --mood-sad: #96b8d0;
+  --mood-angry: #d98a7a;
+  --mood-anxious: #d0d089;
+  --mood-sick: #8fc99e;
+
+  --gradient-app: linear-gradient(135deg, #dceccd 0%, #e9d8a6 55%, #f7faf2 100%);
+  --shadow-soft: 0 10px 30px -12px rgba(78, 154, 111, 0.3);
+  --shadow-glow: 0 0 18px rgba(217, 171, 90, 0.5);
+
+  --fw-heading: 650;
+  --fw-body: 480;
+  --decor-opacity: 0.5;
+}
+
+/* ---------- Bold Arena — cowo, gelap & tegas ---------- */
 :root[data-skin='bold'] {
-  --color-bg: #0f1120;
-  --color-surface: #1a1d38;
-  --color-surface-alt: #232748;
-  --color-primary: #3da9fc;
-  --color-secondary: #ff6b45;
-  --color-accent: #a6ff5e;
-  --color-ink: #f4f6ff;
-  --color-muted: #8b90b3;
-  --color-border: #2c3060;
+  --color-bg: #201a17;
+  --color-surface: #2a2320;
+  --color-surface-alt: #3a312c;
+  --color-primary: #ff7a33;
+  --color-secondary: #ffc247;
+  --color-accent: #ffc247;
+  --color-ink: #f5efe9;
+  --color-muted: #a89a8f;
+  --color-border: #453a33;
 
-  --mood-happy: #ffc93c;
-  --mood-neutral: #7c86ab;
-  --mood-tired: #9d7bff;
-  --mood-sad: #3da9fc;
-  --mood-angry: #ff4d6d;
+  --mood-happy: #ffc247;
+  --mood-loved: #ff6f9e;
+  --mood-calm: #4fd6c0;
+  --mood-excited: #ff7a33;
+  --mood-neutral: #9a8f83;
+  --mood-tired: #a670e0;
+  --mood-sad: #4f95d6;
+  --mood-angry: #ff4d4d;
+  --mood-anxious: #c4d647;
+  --mood-sick: #5ec98a;
 
-  --gradient-app: linear-gradient(135deg, #0f1120 0%, #1a1440 40%, #0d1a38 70%, #16102f 100%);
+  --gradient-app: linear-gradient(135deg, #201a17 0%, #2a2018 55%, #1a1512 100%);
   --shadow-soft: 0 10px 30px -10px rgba(0, 0, 0, 0.6);
-  --shadow-glow: 0 0 22px rgba(61, 169, 252, 0.65);
+  --shadow-glow: 0 0 22px rgba(255, 122, 51, 0.6);
+
+  --fw-heading: 800;
+  --fw-body: 600;
+  --decor-opacity: 0.9;
+}
+
+/* ---------- Cyber Night — cowo, neon futuristik ---------- */
+:root[data-skin='cyber'] {
+  --color-bg: #14152a;
+  --color-surface: #20223f;
+  --color-surface-alt: #2c2f52;
+  --color-primary: #3fe0d0;
+  --color-secondary: #b06bff;
+  --color-accent: #3fe0d0;
+  --color-ink: #eef0ff;
+  --color-muted: #8890c0;
+  --color-border: #34366a;
+
+  --mood-happy: #ffd93f;
+  --mood-loved: #ff5fa8;
+  --mood-calm: #3fe0d0;
+  --mood-excited: #ff9d3f;
+  --mood-neutral: #8890c0;
+  --mood-tired: #b06bff;
+  --mood-sad: #3f9dff;
+  --mood-angry: #ff3f6b;
+  --mood-anxious: #d0ff3f;
+  --mood-sick: #3fffa0;
+
+  --gradient-app: linear-gradient(135deg, #14152a 0%, #20223f 50%, #2c1f52 100%);
+  --shadow-soft: 0 10px 30px -10px rgba(0, 0, 0, 0.6);
+  --shadow-glow: 0 0 22px rgba(63, 224, 208, 0.6);
 
   --fw-heading: 800;
   --fw-body: 600;
@@ -93,7 +203,7 @@ body {
   margin: 0;
   background: var(--color-bg);
   color: var(--color-ink);
-  font-family: 'Inter', system-ui, sans-serif;
+  font-family: 'Nunito', system-ui, sans-serif;
   font-weight: var(--fw-body);
   -webkit-tap-highlight-color: transparent;
 }

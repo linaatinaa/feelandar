@@ -3,7 +3,7 @@ import MoodMascot from './mascots/MoodMascot';
 import { findMood } from '../lib/moods';
 
 export default function DayModal({ entry, onClose }) {
-  const mood = entry ? findMood(entry.mood_emoji) : null;
+  const moods = (entry?.mood_emojis || []).map(findMood).filter(Boolean);
 
   return (
     <AnimatePresence>
@@ -23,20 +23,31 @@ export default function DayModal({ entry, onClose }) {
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: 40, opacity: 0 }}
             transition={{ type: 'spring', stiffness: 260, damping: 24 }}
-            className="w-full sm:w-80 rounded-t-3xl sm:rounded-3xl p-5 pb-6 shadow-soft bg-surface text-ink"
+            className="w-full sm:w-80 rounded-t-3xl sm:rounded-3xl p-5 pb-6 shadow-soft bg-surface text-ink max-h-[85vh] overflow-y-auto"
           >
             <div className="text-center mb-4">
-              <MoodMascot mood={mood?.value} size={72} className="mx-auto" />
-              <div className="text-sm text-muted mt-2">{mood?.label}</div>
+              <div className="flex justify-center gap-1 flex-wrap">
+                {moods.map((mood) => (
+                  <MoodMascot key={mood.value} mood={mood.value} size={moods.length > 3 ? 52 : 68} />
+                ))}
+              </div>
+              <div className="text-sm text-muted mt-2">{moods.map((m) => m.label).join(' · ')}</div>
               <div className="text-xs text-muted opacity-70 mt-1">{entry.date}</div>
             </div>
 
-            {entry.note ? (
+            {entry.doing && (
+              <p className="text-sm mb-2">
+                <span className="text-muted">Lagi: </span>
+                {entry.doing}
+              </p>
+            )}
+
+            {entry.story ? (
               <p className="text-sm rounded-2xl p-3 whitespace-pre-wrap break-words bg-surface-alt">
-                {entry.note}
+                {entry.story}
               </p>
             ) : (
-              <p className="text-sm text-center text-muted">Tidak ada catatan</p>
+              <p className="text-sm text-center text-muted">Tidak ada cerita</p>
             )}
 
             <motion.button

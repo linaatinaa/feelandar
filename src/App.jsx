@@ -1,10 +1,9 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import MoodPicker from './components/MoodPicker';
-import Calendar from './components/Calendar';
-import DayModal from './components/DayModal';
-import StatsCard from './components/StatsCard';
-import MoodChart from './components/MoodChart';
+import TodayPage from './components/TodayPage';
+import CalendarPage from './components/CalendarPage';
+import HabitPage from './components/HabitPage';
+import ExpensePage from './components/ExpensePage';
 import ThemePicker from './components/ThemePicker';
 import ProfilePage from './components/ProfilePage';
 import GamesPage from './components/games/GamesPage';
@@ -21,12 +20,11 @@ const fadeTransition = { duration: 0.3 };
 export default function App() {
   const [skin, setSkin] = useSkin();
   const [inTelegram, setInTelegram] = useState(true);
-  const [page, setPage] = useState('home');
+  const [page, setPage] = useState('today');
   const [viewDate, setViewDate] = useState(new Date(today.getFullYear(), today.getMonth(), 1));
   const [monthEntries, setMonthEntries] = useState([]);
   const [recentEntries, setRecentEntries] = useState([]);
   const [stats, setStats] = useState(null);
-  const [selectedEntry, setSelectedEntry] = useState(null);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState(null);
@@ -88,11 +86,11 @@ export default function App() {
     [recentEntries, entriesByDate]
   );
 
-  async function handleSubmitMood({ mood_emoji, note }) {
+  async function handleSubmitMood({ mood_emojis, doing, story }) {
     setSubmitting(true);
     setError(null);
     try {
-      await api.submitMood({ date: todayKey, mood_emoji, note });
+      await api.submitMood({ date: todayKey, mood_emojis, doing, story });
       getWebApp()?.HapticFeedback?.notificationOccurred?.('success');
       await Promise.all([loadMonth(), loadRecent()]);
     } catch (err) {
@@ -196,62 +194,41 @@ export default function App() {
                   ))}
                 </motion.div>
               ) : (
-                <motion.div key="content" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-                  <AnimatePresence mode="wait">
-                    {page === 'home' ? (
-                      <motion.div
-                        key="home"
-                        initial={{ opacity: 0, x: -12 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: -12 }}
-                        transition={{ duration: 0.2 }}
-                      >
-                        <MoodPicker
-                          todayEntry={todayEntry}
-                          onSubmit={handleSubmitMood}
-                          submitting={submitting}
-                          onMoodPreview={setPreviewMood}
-                        />
-                        <StatsCard stats={stats} />
-                        <Calendar
-                          year={year}
-                          month={month}
-                          entriesByDate={entriesByDate}
-                          todayKey={todayKey}
-                          streak={stats?.streak ?? 0}
-                          onPrevMonth={goToPrevMonth}
-                          onNextMonth={goToNextMonth}
-                          onSelectEntry={setSelectedEntry}
-                        />
-                        <MoodChart entries={recentEntries} />
-                      </motion.div>
-                    ) : page === 'games' ? (
-                      <motion.div
-                        key="games"
-                        initial={{ opacity: 0, x: 12 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: 12 }}
-                        transition={{ duration: 0.2 }}
-                      >
-                        <GamesPage />
-                      </motion.div>
-                    ) : (
-                      <motion.div
-                        key="profile"
-                        initial={{ opacity: 0, x: 12 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: 12 }}
-                        transition={{ duration: 0.2 }}
-                      >
-                        <ProfilePage stats={stats} skin={skin} onChangeSkin={setSkin} />
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
+                <motion.div
+                  key={page}
+                  initial={{ opacity: 0, x: 10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -10 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  {page === 'today' && (
+                    <TodayPage
+                      todayEntry={todayEntry}
+                      onSubmit={handleSubmitMood}
+                      submitting={submitting}
+                      onMoodPreview={setPreviewMood}
+                      stats={stats}
+                    />
+                  )}
+                  {page === 'calendar' && (
+                    <CalendarPage
+                      year={year}
+                      month={month}
+                      entriesByDate={entriesByDate}
+                      todayKey={todayKey}
+                      streak={stats?.streak ?? 0}
+                      onPrevMonth={goToPrevMonth}
+                      onNextMonth={goToNextMonth}
+                      recentEntries={recentEntries}
+                    />
+                  )}
+                  {page === 'habit' && <HabitPage />}
+                  {page === 'expense' && <ExpensePage />}
+                  {page === 'games' && <GamesPage />}
+                  {page === 'profile' && <ProfilePage stats={stats} skin={skin} onChangeSkin={setSkin} />}
                 </motion.div>
               )}
             </AnimatePresence>
-
-            <DayModal entry={selectedEntry} onClose={() => setSelectedEntry(null)} />
           </div>
 
           <BottomNav active={page} onChange={changePage} />

@@ -12,7 +12,7 @@ const GOOD_BUBBLE_CHANCE = 0.42;
 // Bad (pop these!) vs good (leave them be) mood bubbles — distinguished by
 // both color and emoji so the choice reads instantly under time pressure.
 const BAD_EMOJIS = ['😠', '😣', '😢', '😤'];
-const GOOD_EMOJIS = ['😄', '🥰', '😊', '😌'];
+const GOOD_EMOJIS = ['😄', '🥰', '🤩', '😌'];
 const BAD_COLOR = '#F87171';
 const GOOD_COLOR = '#4ADE80';
 
@@ -197,7 +197,7 @@ export default function BubblePop({ onBack }) {
           </div>
         ) : (
           <div className="text-center py-10">
-            <p className="font-heading text-base text-ink mb-1">Waktu habis! 🫧</p>
+            <p className="font-heading text-base text-ink mb-1">Waktu habis! 🎈</p>
             <p className="text-sm text-muted mb-1">Skor akhir: {score}</p>
             <p className="text-sm text-muted mb-4">Combo terbaik: ×{maxCombo}</p>
             <motion.button

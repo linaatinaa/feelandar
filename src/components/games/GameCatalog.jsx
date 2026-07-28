@@ -15,7 +15,7 @@ const GAMES = [
     id: 'bubble',
     title: 'Bubble Pop Mood',
     tagline: 'Pop gelembung warna-warni sebelum melayang hilang',
-    icon: '🫧',
+    icon: '🎈',
   },
   {
     id: 'memory',
@@ -27,7 +27,7 @@ const GAMES = [
     id: 'math',
     title: 'Adu Cepat Hitung',
     tagline: 'Jawab soal matematika sebelum waktu habis',
-    icon: '⏱️',
+    icon: '🧮',
   },
   {
     id: 'colormatch',
@@ -39,25 +39,13 @@ const GAMES = [
     id: 'simon',
     title: 'Emoji Memory Sequence',
     tagline: 'Ingat & ulangi urutan mood yang makin panjang',
-    icon: '🔁',
-  },
-  {
-    id: 'whack',
-    title: 'Whack-a-Worry',
-    tagline: 'Pukul kekhawatiran sebelum ilang duluan',
-    icon: '🔨',
-  },
-  {
-    id: 'rhythm',
-    title: 'Tap the Rhythm',
-    tagline: 'Tap pas lingkaran paling besar, rasakan ritmenya',
-    icon: '🎵',
+    icon: '🎹',
   },
   {
     id: 'mirror',
     title: 'Mirror Face-Off',
     tagline: 'Susun ekspresi wajah sesuai target',
-    icon: '🪞',
+    icon: '🎭',
   },
 ];
 

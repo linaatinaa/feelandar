@@ -3,17 +3,45 @@ import { useCallback, useEffect, useState } from 'react';
 const STORAGE_KEY = 'feelandar_skin';
 
 export const SKINS = {
-  dreamy: {
-    id: 'dreamy',
-    label: 'Dreamy',
-    tagline: 'Pastel, lembut, cute journal',
-    swatches: ['#ff8fb1', '#b79ced', '#ffb84d', '#c3dbf7'],
+  bubblegum: {
+    id: 'bubblegum',
+    label: 'Bubblegum',
+    tagline: 'Girly · manis & pink',
+    emoji: '🍬',
+    dark: false,
+    swatches: ['#ffd9e8', '#ff7ab0', '#ffe6a7', '#fff7fa'],
+  },
+  lavender: {
+    id: 'lavender',
+    label: 'Lavender Dream',
+    tagline: 'Girly · lembut & dreamy',
+    emoji: '🦄',
+    dark: false,
+    swatches: ['#e6ddff', '#a37bea', '#c8e8f5', '#faf7ff'],
+  },
+  nature: {
+    id: 'nature',
+    label: 'Nature',
+    tagline: 'Netral · adem & earthy',
+    emoji: '🌿',
+    dark: false,
+    swatches: ['#dceccd', '#4e9a6f', '#e9d8a6', '#f7faf2'],
   },
   bold: {
     id: 'bold',
-    label: 'Bold',
-    tagline: 'Vibrant, energetic, game dashboard',
-    swatches: ['#3da9fc', '#ff6b45', '#a6ff5e', '#9d7bff'],
+    label: 'Bold Arena',
+    tagline: 'Cowo · gelap & tegas',
+    emoji: '🔥',
+    dark: true,
+    swatches: ['#2a2320', '#ff7a33', '#ffc247', '#3a312c'],
+  },
+  cyber: {
+    id: 'cyber',
+    label: 'Cyber Night',
+    tagline: 'Cowo · neon futuristik',
+    emoji: '🎮',
+    dark: true,
+    swatches: ['#20223f', '#3fe0d0', '#b06bff', '#2c2f52'],
   },
 };
 

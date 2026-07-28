@@ -5,3 +5,7 @@ dist
 .vercel
 *.log
 .DS_Store
+
+# Reference-only Lovable prototype (its own separate git worktree) — not
+# part of this project's source tree.
+new consept/

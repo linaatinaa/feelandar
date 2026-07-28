@@ -6,8 +6,6 @@ import MemoryGame from './MemoryGame';
 import MathGame from './MathGame';
 import ColorMatch from './ColorMatch';
 import SimonSequence from './SimonSequence';
-import WhackAWorry from './WhackAWorry';
-import TapRhythm from './TapRhythm';
 import MirrorFaceOff from './MirrorFaceOff';
 
 const GAME_COMPONENTS = {
@@ -16,8 +14,6 @@ const GAME_COMPONENTS = {
   math: MathGame,
   colormatch: ColorMatch,
   simon: SimonSequence,
-  whack: WhackAWorry,
-  rhythm: TapRhythm,
   mirror: MirrorFaceOff,
 };
 

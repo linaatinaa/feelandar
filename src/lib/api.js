@@ -23,4 +23,19 @@ export const api = {
   submitMood: (payload) =>
     request('/mood', { method: 'POST', body: JSON.stringify(payload) }).then((r) => r.entry),
   getStats: (monthKey, todayKey) => request(`/stats?month=${monthKey}&today=${todayKey}`),
+
+  getHabits: () => request('/habits').then((r) => r.habits),
+  addHabit: (payload) =>
+    request('/habits', { method: 'POST', body: JSON.stringify(payload) }).then((r) => r.habit),
+  removeHabit: (id) => request(`/habits?id=${id}`, { method: 'DELETE' }),
+  getHabitLogsForDate: (date) => request(`/habits/logs?date=${date}`).then((r) => r.doneHabitIds),
+  getHabitLogsForDays: (days = 7) => request(`/habits/logs?days=${days}`).then((r) => r.logs),
+  markHabitDone: (habitId, date) =>
+    request('/habits/logs', { method: 'POST', body: JSON.stringify({ habitId, date }) }),
+  markHabitUndone: (habitId, date) => request(`/habits/logs?habitId=${habitId}&date=${date}`, { method: 'DELETE' }),
+
+  getExpensesForDate: (date) => request(`/expenses?date=${date}`).then((r) => r.expenses),
+  addExpense: (payload) =>
+    request('/expenses', { method: 'POST', body: JSON.stringify(payload) }).then((r) => r.expense),
+  removeExpense: (id) => request(`/expenses?id=${id}`, { method: 'DELETE' }),
 };

@@ -7,6 +7,22 @@ function escapeHtml(str) {
   return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
 
+/** Retries a flaky network call a couple times with backoff — Vercel's
+ * outbound fetch to Supabase/Telegram occasionally drops mid-request
+ * (transient socket/timeout errors), and a retry usually succeeds. */
+async function withRetry(fn, { retries = 2, delayMs = 400 } = {}) {
+  let lastErr;
+  for (let attempt = 0; attempt <= retries; attempt++) {
+    try {
+      return await fn();
+    } catch (err) {
+      lastErr = err;
+      if (attempt < retries) await new Promise((r) => setTimeout(r, delayMs * (attempt + 1)));
+    }
+  }
+  throw lastErr;
+}
+
 /**
  * Lazily builds a node-telegram-bot-api instance with polling disabled —
  * on Vercel we never poll; instead Telegram POSTs updates to
@@ -26,7 +42,7 @@ function getBot() {
     // Fire-and-forget on purpose — the greeting below must still be sent
     // even if this fails (e.g. Supabase env vars not configured yet).
     if (msg.from) {
-      getOrCreateUser(msg.from).catch((err) => {
+      withRetry(() => getOrCreateUser(msg.from)).catch((err) => {
         console.error('Failed to upsert user on /start', err);
       });
     }
@@ -34,23 +50,21 @@ function getBot() {
     const firstName = msg.from?.first_name ? escapeHtml(msg.from.first_name) : 'teman';
     const webAppUrl = process.env.WEBAPP_URL;
     const text = [
-      `Halo, <b>${firstName}</b>! 👋🌈🌙✨`,
+      `Hai ${firstName} 👋`,
       '',
-      'Selamat datang di <b>Feelandar</b> — teman kecil buat nyatetin mood harianmu.',
+      'Ini <b>Feelandar</b> — tempat nyatetin mood harian, checklist habit, catat pengeluaran kecil-kecilan, sampai main mini-game pas lagi butuh rehat. Semua jadi satu di sini.',
       '',
-      'Pilih emoji, tulis cerita singkat, kumpulin <i>streak</i> dan badge, terus lihat progress kamu dalam kalender warna-warni.',
-      '',
-      'Gimana perasaanmu hari ini? 💭 Yuk cerita lewat tombol di bawah 👇',
+      'Yuk mulai 👇',
     ].join('\n');
 
     const options = { parse_mode: 'HTML' };
     if (webAppUrl) {
       options.reply_markup = {
-        inline_keyboard: [[{ text: '🌈 Catat Mood Sekarang', web_app: { url: webAppUrl } }]],
+        inline_keyboard: [[{ text: '✨ Buka Feelandar', web_app: { url: webAppUrl } }]],
       };
     }
 
-    bot.sendMessage(msg.chat.id, text, options).catch((err) => {
+    withRetry(() => bot.sendMessage(msg.chat.id, text, options)).catch((err) => {
       console.error('Failed to send /start reply', err);
     });
   });

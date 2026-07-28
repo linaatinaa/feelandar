@@ -1,4 +1,4 @@
--- Feelandar v1 -> v2 migration
+-- Seavy v1 -> v2 migration
 -- Run ONCE in the Supabase SQL editor against a database that was created
 -- with the original (v1) supabase/schema.sql. It upgrades mood_entries to
 -- support multiple moods per day + doing/story text, and adds the new

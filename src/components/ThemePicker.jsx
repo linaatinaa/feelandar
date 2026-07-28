@@ -16,7 +16,7 @@ export default function ThemePicker({ onSelect }) {
       >
         <div className="text-4xl mb-2">🌈</div>
         <h1 className="font-heading text-2xl mb-1" style={{ color: '#423a4d', fontWeight: 700 }}>
-          Pilih vibe Feelandar-mu
+          Pilih vibe Seavy-mu
         </h1>
         <p className="text-sm max-w-xs" style={{ color: '#7a6f88' }}>
           Kamu bisa ganti kapan saja lewat halaman profil.

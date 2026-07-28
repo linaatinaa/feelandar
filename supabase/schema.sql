@@ -1,4 +1,4 @@
--- Feelandar — Supabase schema (v2: multi-mood entries + habits + expenses)
+-- Seavy — Supabase schema (v2: multi-mood entries + habits + expenses)
 -- Run this in the Supabase SQL editor (Project → SQL Editor → New query)
 -- for a FRESH install. If you already ran the v1 schema against a live
 -- project, use supabase/migrations/002_add_habits_expenses_multi_mood.sql
@@ -16,7 +16,7 @@ create table if not exists users (
   created_at timestamptz not null default now()
 );
 
-comment on table users is 'Telegram users who opened the Feelandar mini app';
+comment on table users is 'Telegram users who opened the Seavy mini app';
 
 -- ============================================================
 -- mood_entries

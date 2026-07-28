@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 
-const STORAGE_KEY = 'feelandar_skin';
+const STORAGE_KEY = 'seavy_skin';
 
 export const SKINS = {
   bubblegum: {

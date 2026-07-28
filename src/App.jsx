@@ -131,9 +131,9 @@ export default function App() {
         >
           <div>
             <div className="text-4xl mb-3">🌈</div>
-            <h1 className="font-heading text-lg text-ink mb-2">Feelandar</h1>
+            <h1 className="font-heading text-lg text-ink mb-2">Seavy</h1>
             <p className="text-sm text-muted max-w-xs">
-              Buka aplikasi ini dari tombol di bot Telegram Feelandar, bukan langsung di browser, agar
+              Buka aplikasi ini dari tombol di bot Telegram Seavy, bukan langsung di browser, agar
               data mood-mu bisa tersimpan dengan aman.
             </p>
           </div>
@@ -165,7 +165,7 @@ export default function App() {
           </AnimatePresence>
 
           <div className="relative max-w-md mx-auto px-4 pt-5 pb-28">
-            <h1 className="font-heading text-lg text-ink mb-4">Feelandar</h1>
+            <h1 className="font-heading text-lg text-ink mb-4">Seavy</h1>
 
             {error && (
               <div className="text-xs rounded-2xl p-3 mb-4 border border-border bg-surface text-ink">

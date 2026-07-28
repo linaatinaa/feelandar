@@ -52,7 +52,7 @@ function getBot() {
     const text = [
       `Hai ${firstName} 👋`,
       '',
-      'Ini <b>Feelandar</b> — tempat nyatetin mood harian, checklist habit, catat pengeluaran kecil-kecilan, sampai main mini-game pas lagi butuh rehat. Semua jadi satu di sini.',
+      'Ini <b>Seavy</b> — tempat nyatetin mood harian, checklist habit, catat pengeluaran kecil-kecilan, sampai main mini-game pas lagi butuh rehat. Semua jadi satu di sini.',
       '',
       'Yuk mulai 👇',
     ].join('\n');
@@ -60,7 +60,7 @@ function getBot() {
     const options = { parse_mode: 'HTML' };
     if (webAppUrl) {
       options.reply_markup = {
-        inline_keyboard: [[{ text: '✨ Buka Feelandar', web_app: { url: webAppUrl } }]],
+        inline_keyboard: [[{ text: '✨ Buka Seavy', web_app: { url: webAppUrl } }]],
       };
     }
 

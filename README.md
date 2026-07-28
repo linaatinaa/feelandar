@@ -1,4 +1,4 @@
-# MoodDiary
+# Seavy
 
 Telegram Mini App untuk mencatat mood harian, dengan kalender visual (mirip GitHub
 contribution graph), statistik streak, dan grafik tren mood mingguan.
@@ -182,12 +182,12 @@ curl "https://api.telegram.org/bot<TELEGRAM_BOT_TOKEN>/getWebhookInfo"
 
 ## 9. Daftarkan Mini App URL ke BotFather
 
-Ini yang membuat tombol "Buka MoodDiary" di `/start` benar-benar bisa membuka web app, dan
+Ini yang membuat tombol "Buka Seavy" di `/start` benar-benar bisa membuka web app, dan
 juga (opsional) memasang tombol menu di pojok kiri bawah chat.
 
 1. Chat @BotFather → `/mybots` → pilih bot kamu.
 2. **Bot Settings → Menu Button → Configure menu button** → masukkan URL Vercel kamu
-   (mis. `https://mooddiary.vercel.app`) dan judul, mis. "Buka MoodDiary".
+   (mis. `https://mooddiary.vercel.app`) dan judul, mis. "Buka Seavy".
 3. (Opsional, untuk Mini App terdaftar penuh dengan nama & ikon di direktori Telegram)
    `/newapp` → pilih bot kamu → isi nama, deskripsi, foto/gif, lalu masukkan URL yang sama.
 
@@ -196,7 +196,7 @@ juga (opsional) memasang tombol menu di pojok kiri bawah chat.
 ## 10. Coba end-to-end
 
 1. Buka bot kamu di Telegram, kirim `/start`.
-2. Bot membalas welcome message dengan tombol **"📔 Buka MoodDiary"**.
+2. Bot membalas welcome message dengan tombol **"📔 Buka Seavy"**.
 3. Tap tombol → mini app terbuka, tema otomatis mengikuti dark/light Telegram kamu.
 4. Pilih emoji mood, isi catatan (opsional), submit → tombol berubah jadi "Sudah diisi hari ini ✓".
 5. Cek kalender bulan ini menampilkan emoji di tanggal hari ini.

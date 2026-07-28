@@ -323,7 +323,7 @@ app.get('/api/stats', requireTelegramAuth, async (req, res) => {
 
 // Telegram calls this webhook for every update (message, callback, etc.)
 app.post('/api/bot-webhook', handleBotWebhook);
-app.get('/api/bot-webhook', (_req, res) => res.json({ ok: true, info: 'Feelandar bot webhook is alive' }));
+app.get('/api/bot-webhook', (_req, res) => res.json({ ok: true, info: 'Seavy bot webhook is alive' }));
 
 app.use((_req, res) => res.status(404).json({ error: 'Not found' }));
 
@@ -336,6 +336,6 @@ module.exports = app;
 if (require.main === module) {
   const port = process.env.PORT || 3001;
   app.listen(port, () => {
-    console.log(`Feelandar API listening on http://localhost:${port}`);
+    console.log(`Seavy API listening on http://localhost:${port}`);
   });
 }

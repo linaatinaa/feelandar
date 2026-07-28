@@ -6,7 +6,7 @@ import { getTelegramUser } from '../lib/telegram';
 
 export default function ProfilePage({ stats, skin, onChangeSkin }) {
   const user = getTelegramUser();
-  const displayName = user?.first_name || user?.username || 'Teman Feelandar';
+  const displayName = user?.first_name || user?.username || 'Teman Seavy';
   const initial = displayName.charAt(0).toUpperCase();
 
   return (

@@ -1,8 +1,8 @@
 {
-  "name": "mooddiary",
+  "name": "seavy",
   "version": "1.0.0",
   "private": true,
-  "description": "MoodDiary — Telegram Mini App untuk mood tracker harian dengan kalender visual",
+  "description": "Seavy — Telegram Mini App untuk mood, habit, dan pengeluaran harian",
   "type": "commonjs",
   "scripts": {
     "dev": "vite",
